@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour {
 
@@ -8,5 +10,17 @@ public class UIController : MonoBehaviour {
     {
         print("Quit button was clicked");
         Application.Quit();
+    }
+
+    public void RetryButton()
+    {
+        print("Retry button was clicked");
+        SceneManager.LoadScene("LevelOne");
+    }
+
+    public void MainMenuButton()
+    {
+        print("Main Menu button was clicked");
+        SceneManager.LoadScene("MainMenu");
     }
 }

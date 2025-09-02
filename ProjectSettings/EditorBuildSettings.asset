@@ -8,4 +8,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LevelOne.unity
     guid: f0e1a912b4108de4c8ec3d74353941c6
+  - enabled: 1
+    path: Assets/Scenes/DeathMenu.unity
+    guid: e36c726e2edbf134b8ac7c563cfb2ddd
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 499290f5bd315cf4cb04261090e595fb
+  - enabled: 1
+    path: Assets/Scenes/HELP.unity
+    guid: 32e91ac8dd22735499aea7fcf7cca048
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

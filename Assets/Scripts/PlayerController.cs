@@ -56,8 +56,9 @@ public class PlayerController : MonoBehaviour
         float moveHorizontal = Input.GetAxisRaw("Horizontal");
         float moveVertical = Input.GetAxisRaw("Vertical");
 
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-        rb.linearVelocity = (movement * speed);
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
+
+        rb.linearVelocity = new Vector3(movement.x * speed, rb.linearVelocity.y, movement.z * speed);
     }
 
     private void OnCollisionEnter(Collision other)
@@ -88,11 +89,10 @@ public class PlayerController : MonoBehaviour
             audioSource.Play();
 
         }
-
+        // string currentSceneName = SceneManager.GetActiveScene().name;
         if (other.gameObject.CompareTag("DeathZone"))
         {
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(currentSceneName);
+            SceneManager.LoadScene("DeathMenu");
         }
 
         if (other.gameObject.CompareTag("Grow") && !hasGrown)
@@ -123,7 +123,7 @@ public class PlayerController : MonoBehaviour
     void SetCountText()
     {
         countText.text = "Count: " + count.ToString();
-        if(count >= 5)
+        if(count >= 10)
         {
             gameOver = true; // returns true value to signal game is over
             timeText.color = Color.green;  // changes timer's color
