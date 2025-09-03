@@ -11,6 +11,7 @@ TagManager:
   - Door
   - Jump
   - Breakable
+  - PortalLV1
   layers:
   - Default
   - TransparentFX

@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     //These public variables are initialized in the Inspector
     public float speed;
     public TMP_Text countText;
-    public TMP_Text winText;
     public TMP_Text timeText;  //  variable to display the timer text in Unity
     public float startingTime;  // variable to hold the game's starting time
     public string min;
@@ -21,7 +20,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private int count;
     private bool gameOver; //  bool to define game state on or off.
-    private bool hasGrown = false; // bool to set a state of growth to false
+    private bool hasGrown;
 
     // Audio
     public AudioClip coinSFX;
@@ -33,7 +32,6 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         count = 0;
         SetCountText();
-        winText.text = "";
         startingTime = Time.time;
         gameOver = false;
 
@@ -53,12 +51,20 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        float moveHorizontal = Input.GetAxisRaw("Horizontal");
-        float moveVertical = Input.GetAxisRaw("Vertical");
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
-        rb.linearVelocity = new Vector3(movement.x * speed, rb.linearVelocity.y, movement.z * speed);
+        rb.AddForce(movement * speed);
+
+
+        //float moveHorizontal = Input.GetAxisRaw("Horizontal");
+        //float moveVertical = Input.GetAxisRaw("Vertical");
+
+        //Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
+
+        //rb.linearVelocity = new Vector3(movement.x * speed, rb.linearVelocity.y, movement.z * speed);
     }
 
     private void OnCollisionEnter(Collision other)
@@ -100,7 +106,6 @@ public class PlayerController : MonoBehaviour
             if (transform.localScale.x < 2)
             {
                 transform.localScale *= 2;    // increase scale by 100%
-                hasGrown = true;
                 Destroy(other.gameObject); // Destroys stuff with Grow tags like powerups
                                            // Remove this code if you like, I thought it'd be fitting
             }
@@ -108,9 +113,14 @@ public class PlayerController : MonoBehaviour
 
         if (other.gameObject.CompareTag("Shrink"))
         {
-            if (transform.localScale.x >= 0.5f)
+            if (transform.localScale.x >= 1)
             {
-                transform.localScale *= 0.75f;     // decreases scale by 25%
+                transform.localScale *= 0.5f;
+                Destroy(other.gameObject);
+
+
+
+                //transform.localScale *= 0.75f;     // decreases scale by 25%
             }
         }
 
@@ -127,8 +137,6 @@ public class PlayerController : MonoBehaviour
         {
             gameOver = true; // returns true value to signal game is over
             timeText.color = Color.green;  // changes timer's color
-            winText.text = "You win!";
-            speed = 0;
         }
     }
 }
