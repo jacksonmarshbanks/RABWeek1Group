@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 {
 
     //These public variables are initialized in the Inspector
-    public float speed;
+    private float speed = 5;
     public TMP_Text countText;
     public TMP_Text timeText;  //  variable to display the timer text in Unity
     public float startingTime;  // variable to hold the game's starting time
@@ -51,29 +51,36 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        float moveHorizontal = Input.GetAxisRaw("Horizontal");
+        float moveVertical = Input.GetAxisRaw("Vertical");
 
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        // Create movement vector
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
 
-        rb.AddForce(movement * speed);
+        // Preserve current Y velocity for gravity
+        Vector3 currentVelocity = rb.linearVelocity;
+        Vector3 targetVelocity = new Vector3(movement.x * speed, currentVelocity.y, movement.z * speed);
+
+        // Snap instantly for snappy controls
+        rb.linearVelocity = targetVelocity;
 
 
-        //float moveHorizontal = Input.GetAxisRaw("Horizontal");
-        //float moveVertical = Input.GetAxisRaw("Vertical");
+        // Old movement code in case we want to revert
 
-        //Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
-
-        //rb.linearVelocity = new Vector3(movement.x * speed, rb.linearVelocity.y, movement.z * speed);
+        // float moveHorizontal = Input.GetAxis("Horizontal");
+        // float moveVertical = Input.GetAxist("Vertical");
+        // Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        // rb.AddForce(movement * speed);
     }
 
+    
     private void OnCollisionEnter(Collision other)
         // This is for breakable objects or anything else we need
         // Specifically for it you need to collide with something, because triggers don't have physics
     {
         if (other.gameObject.CompareTag("Breakable"))
         {
-            if (transform.localScale.x >= 2.0f)
+            if (transform.localScale.x >= 1.5f)
             {
                 Destroy(other.gameObject);
             }
@@ -83,7 +90,7 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //This event/function handles trigger events (collsion between a game object with a rigid body)
-   
+
         if (other.gameObject.tag == "PickUp")
         {
             other.gameObject.SetActive(false);
@@ -101,32 +108,45 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadScene("DeathMenu");
         }
 
-        if (other.gameObject.CompareTag("Grow") && !hasGrown)
-        {                                  // Now only grows once to size 2 thanks to hasGrown bool
-            if (transform.localScale.x < 2)
-            {
-                transform.localScale *= 2;    // increase scale by 100%
-                Destroy(other.gameObject); // Destroys stuff with Grow tags like powerups
-                                           // Remove this code if you like, I thought it'd be fitting
-            }
-        }
-
-        if (other.gameObject.CompareTag("Shrink"))
+        // Grow Pad
+        if (other.CompareTag("Grow"))
         {
-            if (transform.localScale.x >= 1)
+            // Small to Normal, otherwise Normal to Big
+            if (transform.localScale.x < 1.0f)
             {
-                transform.localScale *= 0.5f;
-                Destroy(other.gameObject);
-
-
-
-                //transform.localScale *= 0.75f;     // decreases scale by 25%
+                transform.localScale = Vector3.one * 1.0f;
             }
+            else
+            {
+                transform.localScale = Vector3.one * 1.5f;
+            }
+            Destroy(other.gameObject);
+            return;
         }
 
+        // Shrink Pad
+        if (other.CompareTag("Shrink"))
+        {
+            // Big to Normal, otherwise Normal to Small
+            if (transform.localScale.x > 1.0f)
+            {
+                transform.localScale = Vector3.one * 1.0f;
+            }
+            else
+            {
+                transform.localScale = Vector3.one * 0.5f;
+            }
+            Destroy(other.gameObject);
+            return;
+        }
+
+
+        // Bounce Pad
         if (other.gameObject.CompareTag("Jump"))
         {
             rb.AddForce(new Vector3(0.0f, 300.0f, 0.0f));
+            AudioManager.instance.PlaySound(AudioManager.instance.bouncePad); // Sound doesn't work yet
+            return;
         }
     }
 
