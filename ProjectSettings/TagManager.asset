@@ -12,6 +12,8 @@ TagManager:
   - Jump
   - Breakable
   - PortalLV1
+  - Portal
+  - VictoryCube
   layers:
   - Default
   - TransparentFX

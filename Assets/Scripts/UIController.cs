@@ -23,4 +23,10 @@ public class UIController : MonoBehaviour {
         print("Main Menu button was clicked");
         SceneManager.LoadScene("MainMenu");
     }
+
+    public void InstructionsButton()
+    {
+        print("Instructions button was clicked");
+        SceneManager.LoadScene("HELP");
+    }
 }

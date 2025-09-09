@@ -16,9 +16,14 @@ public class PlayerController : MonoBehaviour
     public string min;
     public string sec;
 
+    // References to game objects
+    public GameObject Portal;
+    public GameObject WinText;
+    public GameObject VictoryCube; // My cheap way of opening the WIN scene when Lvl2 is completed
+
     //These private variables are initialized in the Start
     private Rigidbody rb;
-    private int count;
+    public int count;
     private bool gameOver; //  bool to define game state on or off.
     private bool hasGrown;
 
@@ -37,6 +42,9 @@ public class PlayerController : MonoBehaviour
 
         audioSource = GetComponent<AudioSource>();  // access the audio source component of player
 
+        Portal.SetActive(false);
+        WinText.SetActive(false);
+        VictoryCube.SetActive(false);
     }
     private void Update()
     {
@@ -82,8 +90,18 @@ public class PlayerController : MonoBehaviour
         {
             if (transform.localScale.x >= 1.5f)
             {
+                AudioManager.instance.PlaySound(AudioManager.instance.wallBreak);
                 Destroy(other.gameObject);
             }
+        }
+
+        // Portal logic for crossing into the next level
+        if (other.gameObject.CompareTag("Portal"))
+        {
+            // Change logic later to go to next scene.
+            // Maybe an if statement to check what level the player is on and direct them accordingly
+            WinText.SetActive(false);
+            SceneManager.LoadScene("LevelTwo");
         }
     }
 
@@ -148,6 +166,12 @@ public class PlayerController : MonoBehaviour
             AudioManager.instance.PlaySound(AudioManager.instance.bouncePad); // Sound doesn't work yet
             return;
         }
+
+        // Victory Cube
+        if (other.gameObject.CompareTag("VictoryCube"))
+        {
+            SceneManager.LoadScene("WIN");
+        }
     }
 
     void SetCountText()
@@ -157,6 +181,9 @@ public class PlayerController : MonoBehaviour
         {
             gameOver = true; // returns true value to signal game is over
             timeText.color = Color.green;  // changes timer's color
+            Portal.SetActive(true);
+            WinText.SetActive(true);
+            VictoryCube.SetActive(true);
         }
     }
 }
