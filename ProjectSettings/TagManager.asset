@@ -14,6 +14,9 @@ TagManager:
   - PortalLV1
   - Portal
   - VictoryCube
+  - LR
+  - RL
+  - UD
   layers:
   - Default
   - TransparentFX

@@ -57,6 +57,7 @@ MonoBehaviour:
   portalOpen: {fileID: 0}
   deathSound: {fileID: 0}
   buttonSound: {fileID: 0}
+  projectileSound: {fileID: 8300000, guid: a95b7a7a8d64313418a8e187771b5628, type: 3}
   mainMenuMusic: {fileID: 0}
   levelMusic: {fileID: 0}
   loseMusic: {fileID: 0}

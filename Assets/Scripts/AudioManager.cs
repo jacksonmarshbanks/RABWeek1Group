@@ -20,6 +20,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip portalOpen;
     public AudioClip deathSound;
     public AudioClip buttonSound;
+    public AudioClip projectileSound;
 
     // Music Clips
     public AudioClip mainMenuMusic;
