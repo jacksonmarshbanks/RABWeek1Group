@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 {
 
     //These public variables are initialized in the Inspector
-    private float speed = 5;
+    [SerializeField] private float speed = 5; // Speedy Gonzales
     public TMP_Text countText;
     public TMP_Text timeText;  //  variable to display the timer text in Unity
     public float startingTime;  // variable to hold the game's starting time
@@ -177,7 +177,7 @@ public class PlayerController : MonoBehaviour
     void SetCountText()
     {
         countText.text = "Count: " + count.ToString();
-        if(count >= 10)
+        if (count >= 10)
         {
             gameOver = true; // returns true value to signal game is over
             timeText.color = Color.green;  // changes timer's color
