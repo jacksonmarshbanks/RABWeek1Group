@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
         min = ((int)timer / 60).ToString();     // calculates minutes
         sec = (timer % 60).ToString("f0");      // calculates seconds
 
-        timeText.text = "Elapsed Time: " + min + ":" + sec;     // update UI time text
+        timeText.text = "Time: " + min + ":" + sec;     // update UI time text
     }
 
     void FixedUpdate()
