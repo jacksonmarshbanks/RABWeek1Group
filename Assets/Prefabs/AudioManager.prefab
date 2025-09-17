@@ -50,8 +50,8 @@ MonoBehaviour:
   musicSource: {fileID: 6485628123438111075}
   coinCollect: {fileID: 0}
   bouncePad: {fileID: 8300000, guid: e3aad631e94eccf4e92125f5482ab134, type: 3}
-  growPad: {fileID: 0}
-  shrinkPad: {fileID: 0}
+  growPad: {fileID: 8300000, guid: df3ff4fcec0daf94fbb973620c7129cf, type: 3}
+  shrinkPad: {fileID: 8300000, guid: 2524a96a599f5684f8b42f1b61afe799, type: 3}
   wallBreak: {fileID: 8300000, guid: 3d45ffa704321124d9b93f3485f6107f, type: 3}
   portalEnter: {fileID: 0}
   portalOpen: {fileID: 0}
